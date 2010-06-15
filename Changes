@@ -1,0 +1,6 @@
+Revision history for Perl extension Acme::AGMorse.
+
+0.01  Mon Jun 14 11:45:51 2010
+	- original version; created by h2xs 1.23 with options
+		-X -n Acme::AGMorse
+

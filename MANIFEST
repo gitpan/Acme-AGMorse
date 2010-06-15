@@ -1,0 +1,7 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/Acme-AGMorse.t
+lib/Acme/AGMorse.pm
+META.yml                                 Module meta-data (added by MakeMaker)
