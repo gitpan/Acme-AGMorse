@@ -13,9 +13,8 @@ our @ISA = qw(Exporter);
 
 our @EXPORT_OK = qw(SetMorseVals SendMorseChr SendMorseMsg);
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
-# Preloaded methods go here.
 
 ##### Subroutines
 sub _CreateMorseTable;
@@ -29,11 +28,11 @@ sub SendMorseMsg;
 
   my $Tone;					#  Tone in Hz to be used for morse monitor
   my $wpm;                  #  words per minute
-  my $dahWeight;            #  x 10 for integer reselution
+  my $dahWeight;            #  x 10 for integer resolution
   my $ditEle_mSec;          #  dit elemetn in mSec
   my $dahEle_mSec;          #  dah element in mSec
   my $intrEle_mSec;         #  inter element space
-  my $intrChr_mSec;         #  inter charater space for msgs
+  my $intrChr_mSec;         #  inter character space for msgs
   my $intrWord_mSec;        #  inter word space for msgs
   my $ditFist_mSec;         #  for future paddle interface
   my $dahFist_mSec;         #  for future paddle interface
@@ -64,7 +63,7 @@ sub SetMorseVals{
 	$intrChr_mSec = 4 * $intrEle_mSec;
 	$intrWord_mSec = 7 * $intrEle_mSec;
 
-	return ($wpmIn + $dahWeightIn + $toneIn);
+	return ($wpmIn + $dahWeightIn + $toneIn); # this is a diagnostic return val
 }
 
 sub _CalMorseVals{
@@ -88,18 +87,13 @@ sub _CalMorseVals{
 
 sub _CreateMorseTable{
 # This is a psuedo code for Morse characters.  It uses 0 for a dit and 1 for
-# a dah.  It also uses 2 fo inter character spacing.  It builds a hash table for
+# a dah.  It also uses 2 for inter character spacing.  
+# It builds a hash table for
 # all morse characters                                                   
 # Note:  This is a perl implementation and is very memory wasteful.  I
 # was not concerned given this would be run on comparitively large machines.
 # however,  the first version of the psuedo code was done in 1989 and use a 
-# bit map of a single byte where the first three bits determined the
-# number of elements int the character (up to 5) and the last 5 bits represented
-# the dits and dahs.  This highly compressed form has been used successfully on
-# early vintage (pre 1990) PC's and late vintage microcontrollers where space is
-# at a premium.  the length opcode are numbers from 0 to 4 inclusive.  
-# the numbers 5,6 and 7 are used to indicate inter character and inter word
-# spacing
+# bit map of a single word (2 bytes)
 	
 	%MorseCode = (	# Static hash  of Morse Code element def		
 	'@'=>'', 		# 0 @ */ 
@@ -248,11 +242,11 @@ Note:  This has been tested on Ubuntu Karmic only.
 
 
 #The following will send "Hello World" in Morse Code at 20 wpm and a dah
-#weight of three dits or 30 (1/10 resolution for dah weight control)
+#weight of three dits or 30 (1/10 resolution for dah weight control) 
+# and a tone of 400 Hz.
 
-use Acme::AGMorse;
-
-  SetMorseVals(20,30,0);
+  use Acme::AGMorse qw(SetMorseVals SendMorseChr SendMorseMsg);
+  SetMorseVals(20,30,400);
   SendMorseMsg("Hello World");  #note, caps are ingnored in Morse Code
   exit;
 
@@ -264,6 +258,8 @@ The original code for sending Morse code was derived from programs developed by 
 for early Windoze
 
 =head2 EXPORT
+
+qw(SetMorseVals SendMorseChr SendMorseMsg);
 
 None by default.
 
@@ -290,7 +286,7 @@ MorseJeapordy.pl script  (which is why I built this library)
 
 =head1 AUTHOR
 
-paula Keezer
+paula Keezer nx1p @at@ arrl.net
 
 =head1 COPYRIGHT AND LICENSE
 
